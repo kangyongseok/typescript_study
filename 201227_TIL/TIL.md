@@ -76,3 +76,133 @@ let tuple: [string, number] = ['blue', 10] // [10, 'blue'](X)
 enum Color {Red, Blue, Green}
 let c: Color = Color.Green;
 ```
+
+## 인터페이스
+인터페이스는 변수의 타입으로 지정하여 사용할 수 있고 이때 해당 타입은 인터페이스를 준수하여야 한다.
+```typescript
+interface Todo { // 인터페이스 정의
+    id: number;
+    content: string;
+    completed: boolean;
+}
+
+// 변수 todo의 타입으로 인터페이스 Todo 를 선언
+let todo: Todo;
+todo = {
+    id: 1,
+    content: 'typescript',
+    completed: true,
+}
+
+
+const text = `id = ${todo.id}, content = ${todo.content}, complete = ${todo.completed}`;
+
+console.log(text); // id = 1, content = typescript, complete = true
+
+```
+
+만약 인터페이스를 벗어난 값을 객체에 추가하려고 하면 vscode 사용 기준으로 빨간줄로 문제가 있다고 표시를 해주고 컴파일을 돌리더라도 바로 에러가 발생한다
+
+```javascript
+201227_TIL/interface.ts:13:5 - error TS2322: Type '{ id: number; content: string; completed: true; test: number; }' is not assignable to type 'Todo'.
+  Object literal may only specify known properties, and 'test' does not exist in type 'Todo'.
+
+13     test: 123,
+       ~~~~~~~~~
+
+
+Found 1 error.
+```
+
+### 함수와 인터페이스
+변수에 인터페이스를 정의하여 사용하였듯이 함수의 파라미터에도 인터페이스로 타입을 지정하여 사용할 수 있다.
+```typescript
+interface Todo { // 인터페이스 정의
+    id: number;
+    content: string;
+    completed: boolean;
+}
+
+const newTodo: Todo = {
+    id: 1,
+    content: 'typescript',
+    completed: true,
+}
+
+let todos: Todo[] = [];
+
+const addTodo = (todo: Todo) => {
+    todos = [...todos, todo]
+}
+
+addTodo(newTodo);
+console.log(todos) // [ { id: 1, content: 'typescript', completed: true } ]
+```
+
+
+```typescript
+interface PlusFunc {
+    (num: number): number
+}
+
+const plusFunc: PlusFunc = (num: number) => {
+    return num + num;
+}
+
+console.log(plusFunc(10)) // 20
+```
+
+함수에 사용할 인터페이스를 정의할때 함수에서 리턴할 값의 타입또한 인터페이스에서 정의할 수 있다.
+  
+### 클래스와 인터페이스
+클래스 선언문 뒤에 implements interface 를 선언하면 해당 클래스는 인터페이스에 지정된 값들을 반드시 구현해야만 한다. 클래스에 인터페이스를 사용하면 구현하는 클래스의 일관성을 유지할 수 있다.
+
+```typescript
+interface TestTodo {
+    id: number;
+    content: string;
+    complete: boolean;
+}
+
+class Todo implements TestTodo {
+    constructor (
+        public id: number,
+        public content: string,
+        public complete: boolean,
+    ) {}
+}
+
+const todo1 = new Todo(1, 'typescript', false);
+
+console.log(todo1);
+```
+
+**인터페이스와 추상메소드**
+인터페이스에는 일반 변수뿐만 아니라 메소드 또한 정의할 수 있다. 이때 메소드는 무조건 추상메소드여야만 한다.  
+마찬가지로 이 인터페이스를 사용하는 클래스는 해당 메소드또한 필수적으로 클래스에서 구현해야만 한다.
+
+```typescript
+interface TestPerson {
+    name: string;
+    sayHello(): void; // 추상메소드 인터페이스에 정의
+}
+
+class Person implements TestPerson {
+    constructor(public name: string) {}
+
+    sayHello = () => {
+        console.log(`Hello, ${this.name}`);
+    }
+}
+
+const greeter = (person: TestPerson): void => {
+    // 이 함수는 Person 클래스를 인자로 받아 클래스의 추상메소드를 실행
+    person.sayHello();
+}
+
+const me = new Person('kang');
+
+greeter(me); // Hello, kang
+```
+
+### 인터페이스 Duck typing
