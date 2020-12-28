@@ -206,3 +206,44 @@ greeter(me); // Hello, kang
 ```
 
 ### 인터페이스 Duck typing
+오리처럼 걷고 소리를 내면 그건 오리라고 본다. 오리가 아니더라도 오리의 행동을 한다면 오리로 간주한다는것을 말한다.  
+분명 타입스크립트는 자바스크립트에 타입을 지정하기위해 사용하긴하지만 특정 부분에 대해서는 어느정도 자율성이 존재한다.
+```typescript
+interface DuckSound {
+    quack(): void
+}
+
+class Duck implements DuckSound { // 인터페이스를 갖는 클래스
+    quack() {
+        console.log('Quack')
+    }
+}
+
+class Person { // 인터페이스를 가지지않는 클래스
+    quack() {
+        console.log('Quack')
+    }
+}
+
+const duckSound = (sound: DuckSound): void {
+    sound.quack();
+}
+
+duckSound(new Duck()); // Quack
+duckSound(new Person()); // Quack
+```
+타입에 대한 검사가 유연해졌다 라고 볼 수 있는데 이부분에 대한건 별도의 규칙이나 테스트코드들이 필요할 수도있다.
+
+**인터페이스를 변수에 사용할때 덕타이핑**
+```typescript
+interface testPerson {
+    name: string;
+}
+
+const sayHello = (person: testPerson): void => {
+    console.log(`Hello, ${person.name}`)
+}
+
+const me = { name: 'Kang', age: 18 };
+sayHello(me); // Hello, Kang
+```
