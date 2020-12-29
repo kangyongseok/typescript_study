@@ -78,3 +78,19 @@ const developer: Developer2 = {
     skills: ['vue', 'electron']
 }
 ```
+
+## TypeAlias
+인터페이스에서는 표현할수 없는 값들을 Type Alias 를 통해서 지정할 수 있다.
+```typescript
+type Str = 'kang';
+type Union = string | null;
+type Name = 'kang' | 'Kim';
+type Num = 1 | 2 | 3 | 4 | 5;
+type Obj = { a: 1 } | { b: 2 }
+type Func = (() => string) | (() => void);
+
+// type Shape = Square | Rectangle | Circle;
+
+type Tuple = [string, boolean];
+// const t: Tuple = ['', '']; error
+```
