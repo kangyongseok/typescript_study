@@ -44,3 +44,40 @@ function add(a: number, b: number): number {
 ```
 
 이렇게 타입스크립트를 사용하면 일단 인자 2개는 필수값으로 함수사용할때 넘겨 주어여하고 숫자만 받아서 숫자만 리턴해주는 함수를 만들어 의도대로 함수를 사용할 수 있도록 강제할 수 있다.
+
+```typescript
+function add(a: number, b: number): number {
+    return a + b;
+}
+
+add(1, 2) // 3
+add(1, 2, 3) // error
+add(10) // error
+```
+
+매개변수 초기화는 자바스크립트에서 사용하던것과 동일하게 사용하면 된다.
+
+```typescript
+function sum2(a: number, b = 100): number {
+    return a + b;
+}
+
+sum2(1, undefined); // 101
+sum2(1, 2, 3); // error
+sum2(10); // 110
+```
+
+### REST 문법이 적용된 매개변수
+ES6문법에서 지원하는 '...rest' 문법을 타입스크립트에서 사용하면 아래와 같다.
+
+```typescript
+function sum3(a: number, ...nums: number[]): number {
+    let result = 0;
+    for (let key in nums) {
+        result += nums[key];
+    }
+    return a + result;
+}
+
+sum3(1, 2, 3, 4, 5, 6) // 21
+```
