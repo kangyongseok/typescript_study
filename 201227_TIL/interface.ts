@@ -16,3 +16,15 @@ todo = {
 const text = `id = ${todo.id}, content = ${todo.content}, complete = ${todo.completed}`;
 
 console.log(text);
+
+
+interface PersonAge {
+    age: number;
+}
+
+function logAge(obj: PersonAge) {
+    console.log(obj.age)
+}
+
+let person = { name: 'Kang', age: 20 };
+logAge(person)
